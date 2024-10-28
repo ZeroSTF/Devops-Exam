@@ -112,11 +112,34 @@ public class EtudiantServiceImplTest {
     }
 
     @Test
-    void testAddEtudiant_NullEtudiant() {
+    void testAddEtudiant_NullNom() {
+        // Arrange
+        Etudiant etudiantWithNullNom = new Etudiant();
+        etudiantWithNullNom.setPrenomEtudiant("John");
+        etudiantWithNullNom.setCinEtudiant(12345678);
+
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> {
-            etudiantService.addEtudiant(null);
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            etudiantService.addEtudiant(etudiantWithNullNom);
         });
+
+        assertEquals("Nom etudiant cannot be null or empty", exception.getMessage());
+    }
+
+    @Test
+    void testAddEtudiant_InvalidCIN() {
+        // Arrange
+        Etudiant etudiantWithInvalidCIN = new Etudiant();
+        etudiantWithInvalidCIN.setNomEtudiant("Doe");
+        etudiantWithInvalidCIN.setPrenomEtudiant("John");
+        etudiantWithInvalidCIN.setCinEtudiant(0); // Invalid CIN
+
+        // Act & Assert
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            etudiantService.addEtudiant(etudiantWithInvalidCIN);
+        });
+
+        assertEquals("CIN must be a positive number", exception.getMessage());
     }
 
     @Test

@@ -22,6 +22,22 @@ public class EtudiantServiceImpl implements IEtudiantService {
         return etudiantRepository.findById(etudiantId).get();
     }
     public Etudiant addEtudiant(Etudiant c) {
+        if (c == null) {
+            throw new IllegalArgumentException("Etudiant cannot be null");
+        }
+
+        if (c.getNomEtudiant() == null || c.getNomEtudiant().trim().isEmpty()) {
+            throw new IllegalArgumentException("Nom etudiant cannot be null or empty");
+        }
+
+        if (c.getPrenomEtudiant() == null || c.getPrenomEtudiant().trim().isEmpty()) {
+            throw new IllegalArgumentException("Prenom etudiant cannot be null or empty");
+        }
+
+        if (c.getCinEtudiant() <= 0) {
+            throw new IllegalArgumentException("CIN must be a positive number");
+        }
+
         return etudiantRepository.save(c);
     }
     public Etudiant modifyEtudiant(Etudiant c) {
