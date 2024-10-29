@@ -22,7 +22,7 @@ import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
-public class UniversiteServiceImplTest {
+ class UniversiteServiceImplTest {
 
     @Mock
     private UniversiteRepository universiteRepository;
@@ -45,7 +45,7 @@ public class UniversiteServiceImplTest {
     }
 
     @Test
-    public void testRetrieveAllUniversites() {
+     void testRetrieveAllUniversites() {
         // Arrange
         List<Universite> universites = Arrays.asList(universite1, universite2);
         Mockito.when(universiteRepository.findAll()).thenReturn(universites);
@@ -59,7 +59,7 @@ public class UniversiteServiceImplTest {
     }
 
     @Test
-    public void testRetrieveUniversite() {
+     void testRetrieveUniversite() {
         // Arrange
         Mockito.when(universiteRepository.findById(1L)).thenReturn(Optional.of(universite1));
 
@@ -72,7 +72,7 @@ public class UniversiteServiceImplTest {
     }
 
     @Test
-    public void testAddUniversite() {
+     void testAddUniversite() {
         // Arrange
         Mockito.when(universiteRepository.save(any(Universite.class))).thenReturn(universite1);
 
@@ -85,7 +85,7 @@ public class UniversiteServiceImplTest {
     }
 
     @Test
-    public void testModifyUniversite() {
+     void testModifyUniversite() {
         // Arrange
         universite1.setNomUniversite("Universite A Updated");
         Mockito.when(universiteRepository.save(any(Universite.class))).thenReturn(universite1);
@@ -99,7 +99,7 @@ public class UniversiteServiceImplTest {
     }
 
     @Test
-    public void testRemoveUniversite() {
+     void testRemoveUniversite() {
         // Act
         universiteService.removeUniversite(1L);
 

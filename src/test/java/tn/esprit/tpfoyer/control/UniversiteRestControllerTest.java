@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(UniversiteRestController.class)
 @ActiveProfiles("test")
-public class UniversiteRestControllerTest {
+ class UniversiteRestControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -36,7 +36,7 @@ public class UniversiteRestControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
-    public void testGetUniversites() throws Exception {
+     void testGetUniversites() throws Exception {
         // Arrange
         Universite universite1 = new Universite();
         universite1.setIdUniversite(1L);
@@ -59,7 +59,7 @@ public class UniversiteRestControllerTest {
     }
 
     @Test
-    public void testRetrieveUniversite() throws Exception {
+     void testRetrieveUniversite() throws Exception {
         // Arrange
         Universite universite = new Universite();
         universite.setIdUniversite(1L);
@@ -74,7 +74,7 @@ public class UniversiteRestControllerTest {
     }
 
     @Test
-    public void testAddUniversite() throws Exception {
+     void testAddUniversite() throws Exception {
         // Arrange
         Universite universite = new Universite();
         universite.setNomUniversite("Universite A");
@@ -90,7 +90,7 @@ public class UniversiteRestControllerTest {
     }
 
     @Test
-    public void testModifyUniversite() throws Exception {
+     void testModifyUniversite() throws Exception {
         // Arrange
         Universite universite = new Universite();
         universite.setIdUniversite(1L);
@@ -107,7 +107,7 @@ public class UniversiteRestControllerTest {
     }
 
     @Test
-    public void testRemoveUniversite() throws Exception {
+     void testRemoveUniversite() throws Exception {
         // Act & Assert
         mockMvc.perform(delete("/universite/remove-universite/{universite-id}", 1L))
                 .andExpect(status().isOk());
