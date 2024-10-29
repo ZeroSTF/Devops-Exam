@@ -27,7 +27,6 @@ public class EtudiantServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        // First student
         etudiant1 = new Etudiant();
         etudiant1.setIdEtudiant(1L);
         etudiant1.setNomEtudiant("Doe");
@@ -35,7 +34,6 @@ public class EtudiantServiceImplTest {
         etudiant1.setCinEtudiant(12345678);
         etudiant1.setDateNaissance(new Date());
 
-        // Second student
         etudiant2 = new Etudiant();
         etudiant2.setIdEtudiant(2L);
         etudiant2.setNomEtudiant("Smith");
@@ -46,14 +44,11 @@ public class EtudiantServiceImplTest {
 
     @Test
     void testRetrieveAllEtudiants_WithMultipleStudents() {
-        // Arrange
         List<Etudiant> etudiants = Arrays.asList(etudiant1, etudiant2);
         when(etudiantRepository.findAll()).thenReturn(etudiants);
 
-        // Act
         List<Etudiant> result = etudiantService.retrieveAllEtudiants();
 
-        // Assert
         assertNotNull(result);
         assertEquals(2, result.size());
         assertEquals("Doe", result.get(0).getNomEtudiant());
@@ -62,36 +57,28 @@ public class EtudiantServiceImplTest {
 
     @Test
     void testRetrieveAllEtudiants_EmptyList() {
-        // Arrange
         when(etudiantRepository.findAll()).thenReturn(Collections.emptyList());
 
-        // Act
         List<Etudiant> result = etudiantService.retrieveAllEtudiants();
 
-        // Assert
         assertNotNull(result);
         assertTrue(result.isEmpty());
     }
 
     @Test
     void testRetrieveEtudiant_ExistingId() {
-        // Arrange
         when(etudiantRepository.findById(1L)).thenReturn(Optional.of(etudiant1));
 
-        // Act
         Etudiant result = etudiantService.retrieveEtudiant(1L);
 
-        // Assert
         assertNotNull(result);
         assertEquals("Doe", result.getNomEtudiant());
     }
 
     @Test
     void testRetrieveEtudiant_NonExistingId() {
-        // Arrange
         when(etudiantRepository.findById(99L)).thenReturn(Optional.empty());
 
-        // Act & Assert
         assertThrows(NoSuchElementException.class, () -> {
             etudiantService.retrieveEtudiant(99L);
         });
@@ -99,13 +86,10 @@ public class EtudiantServiceImplTest {
 
     @Test
     void testAddEtudiant_ValidData() {
-        // Arrange
         when(etudiantRepository.save(any(Etudiant.class))).thenReturn(etudiant1);
 
-        // Act
         Etudiant result = etudiantService.addEtudiant(etudiant1);
 
-        // Assert
         assertNotNull(result);
         assertEquals(etudiant1.getNomEtudiant(), result.getNomEtudiant());
         verify(etudiantRepository).save(etudiant1);
@@ -113,12 +97,10 @@ public class EtudiantServiceImplTest {
 
     @Test
     void testAddEtudiant_NullNom() {
-        // Arrange
         Etudiant etudiantWithNullNom = new Etudiant();
         etudiantWithNullNom.setPrenomEtudiant("John");
         etudiantWithNullNom.setCinEtudiant(12345678);
 
-        // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             etudiantService.addEtudiant(etudiantWithNullNom);
         });
@@ -128,13 +110,11 @@ public class EtudiantServiceImplTest {
 
     @Test
     void testAddEtudiant_InvalidCIN() {
-        // Arrange
         Etudiant etudiantWithInvalidCIN = new Etudiant();
         etudiantWithInvalidCIN.setNomEtudiant("Doe");
         etudiantWithInvalidCIN.setPrenomEtudiant("John");
         etudiantWithInvalidCIN.setCinEtudiant(0); // Invalid CIN
 
-        // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             etudiantService.addEtudiant(etudiantWithInvalidCIN);
         });
@@ -144,41 +124,32 @@ public class EtudiantServiceImplTest {
 
     @Test
     void testModifyEtudiant_ExistingEtudiant() {
-        // Arrange
         Etudiant modifiedEtudiant = new Etudiant();
         modifiedEtudiant.setIdEtudiant(1L);
         modifiedEtudiant.setNomEtudiant("DoeModified");
         when(etudiantRepository.save(any(Etudiant.class))).thenReturn(modifiedEtudiant);
 
-        // Act
         Etudiant result = etudiantService.modifyEtudiant(modifiedEtudiant);
 
-        // Assert
         assertEquals("DoeModified", result.getNomEtudiant());
     }
 
     @Test
     void testRecupererEtudiantParCin_ExistingCin() {
-        // Arrange
         when(etudiantRepository.findEtudiantByCinEtudiant(12345678)).thenReturn(etudiant1);
 
-        // Act
         Etudiant result = etudiantService.recupererEtudiantParCin(12345678);
 
-        // Assert
         assertNotNull(result);
         assertEquals(12345678, result.getCinEtudiant());
     }
 
     @Test
     void testRecupererEtudiantParCin_NonExistingCin() {
-        // Arrange
         when(etudiantRepository.findEtudiantByCinEtudiant(99999999)).thenReturn(null);
 
-        // Act
         Etudiant result = etudiantService.recupererEtudiantParCin(99999999);
 
-        // Assert
         assertNull(result);
     }
 }

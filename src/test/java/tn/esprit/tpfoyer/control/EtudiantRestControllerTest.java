@@ -110,12 +110,11 @@ public class EtudiantRestControllerTest {
     @Test
     void testAddEtudiant_InvalidData() throws Exception {
         Etudiant invalidEtudiant = new Etudiant();
-        // Empty student with no data
 
         mockMvc.perform(post("/etudiant/add-etudiant")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(invalidEtudiant)))
-                .andExpect(status().isOk()); // Or .andExpect(status().isBadRequest()) if you add validation
+                .andExpect(status().isOk());
     }
 
     @Test
