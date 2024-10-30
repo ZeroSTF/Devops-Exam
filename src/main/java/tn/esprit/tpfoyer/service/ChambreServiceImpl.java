@@ -1,6 +1,7 @@
 package tn.esprit.tpfoyer.service;
 
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,8 +27,10 @@ public class ChambreServiceImpl implements IChambreService {
     }
 
     public Chambre retrieveChambre(Long chambreId) {
-        return  chambreRepository.findById(chambreId).get();
+        return chambreRepository.findById(chambreId)
+                .orElseThrow(() -> new EntityNotFoundException("Chambre with ID " + chambreId + " not found."));
     }
+
 
     public Chambre addChambre(Chambre c) {
         return chambreRepository.save(c);
