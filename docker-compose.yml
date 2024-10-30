@@ -1,6 +1,23 @@
 version: '3.8'
 
 services:
+  app:
+    image: kitarchiheb/tp-foyer:5.0.0
+    container_name: tp-foyer-app
+    ports:
+      - '8080:8080'
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/db
+      SPRING_DATASOURCE_USERNAME: chiheb
+      SPRING_DATASOURCE_PASSWORD: chiheb
+      MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: "*"
+      MANAGEMENT_ENDPOINTS_WEB_BASE_PATH: /actuator
+      MANAGEMENT_ENDPOINT_HEALTH_SHOWDETAILS: always
+    depends_on:
+      - postgres
+    networks:
+      - spring-demo
+
   postgres:
     container_name: postgres-db
     image: postgres
@@ -12,10 +29,28 @@ services:
     volumes:
       - postgres:/data/postgres
     ports:
-      - 5432:5432
+      - '5432:5432'
     networks:
       - spring-demo
     restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - '9090:9090'
+    networks:
+      - spring-demo
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - '3000:3000'
+    networks:
+      - spring-demo
 
 networks:
   spring-demo:
