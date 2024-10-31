@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   app:
-    image: kitarchiheb/tp-foyer:${BUILD_NUMBER}
+    image: kitarchiheb/tp-foyer:${VERSION}
     container_name: tp-foyer-app
     ports:
       - "8087:8089"
@@ -49,6 +49,8 @@ services:
     container_name: grafana
     ports:
       - '3000:3000'
+    volumes:
+      - grafana-data:/var/lib/grafana
     networks:
       - spring-demo
 
@@ -58,4 +60,6 @@ networks:
 
 volumes:
   postgres:
+    driver: local
+  grafana-data:
     driver: local
