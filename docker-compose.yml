@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   app:
-    image: kitarchiheb/tp-foyer:5.0.0
+    image: kitarchiheb/tp-foyer:${BUILD_NUMBER}
     container_name: tp-foyer-app
     ports:
       - "8087:8089"
