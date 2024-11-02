@@ -20,7 +20,7 @@
       image: amineezzaouia07/amineezzaouia_5infini2:latest
       container_name: spring-app
       ports:
-        - "8087:8087"
+        - "${SERVER_PORT:-8087}:8087"
       environment:
         DATABASE_URL: jdbc:mysql://mysql:3306/mydatabase?createDatabaseIfNotExist=true
         DATABASE_USERNAME: springuser
