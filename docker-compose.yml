@@ -1,45 +1,45 @@
-version: "3.8"
-services:
-  mysql:
-    image: mysql:8.0
-    restart: unless-stopped
-    container_name: mysql
-    ports:
-      - "3306:3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: rootpass
-      MYSQL_DATABASE: mydatabase
-      MYSQL_USER: springuser
-      MYSQL_PASSWORD: springpass
-    networks:
-      - spring-network
+  version: "3.8"
+  services:
+    mysql:
+      image: mysql:8.0
+      restart: unless-stopped
+      container_name: mysql
+      ports:
+        - "3306:3306"
+      volumes:
+        - mysql_data:/var/lib/mysql
+      environment:
+        MYSQL_ROOT_PASSWORD: rootpass
+        MYSQL_DATABASE: mydatabase
+        MYSQL_USER: springuser
+        MYSQL_PASSWORD: springpass
+      networks:
+        - spring-network
 
-  spring-app:
-    image: amineezzaouia07/amineezzaouia_5infini2:latest
-    container_name: spring-app
-    ports:
-      - "8087:8087"
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/mydatabase?createDatabaseIfNotExist=true
-      SPRING_DATASOURCE_USERNAME: springuser
-      SPRING_DATASOURCE_PASSWORD: springpass
+    spring-app:
+      image: amineezzaouia07/amineezzaouia_5infini2:latest
+      container_name: spring-app
+      ports:
+        - "8087:8087"
+      environment:
+        SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/mydatabase?createDatabaseIfNotExist=true
+        SPRING_DATASOURCE_USERNAME: springuser
+        SPRING_DATASOURCE_PASSWORD: springpass
 
-      # Monitoring metrics configuration
-      MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: "prometheus,health,info"
-      MANAGEMENT_ENDPOINT_PROMETHEUS_ENABLED: "true"
-      MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED: "true"
-      MANAGEMENT_ENDPOINT_HEALTH_SHOW_DETAILS: "always"
-    depends_on:
-      - mysql
-    restart: on-failure
-    networks:
-      - spring-network
+        # Monitoring metrics configuration
+        MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: "prometheus,health,info"
+        MANAGEMENT_ENDPOINT_PROMETHEUS_ENABLED: "true"
+        MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED: "true"
+        MANAGEMENT_ENDPOINT_HEALTH_SHOW_DETAILS: "always"
+      depends_on:
+        - mysql
+      restart: on-failure
+      networks:
+        - spring-network
 
-volumes:
-  mysql_data: {}
+  volumes:
+    mysql_data: {}
 
-networks:
-  spring-network:
-    driver: bridge
+  networks:
+    spring-network:
+      driver: bridge

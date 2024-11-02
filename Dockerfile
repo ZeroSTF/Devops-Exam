@@ -8,7 +8,7 @@ WORKDIR /app
 COPY target/tp-foyer-5.0.0.jar app.jar
 
 # Exposer le port de l'application
-EXPOSE 8096
+EXPOSE 8089
 
 # Commande pour exécuter l'application Spring Boot
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]
