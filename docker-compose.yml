@@ -20,11 +20,11 @@
       image: amineezzaouia07/amineezzaouia_5infini2:latest
       container_name: spring-app
       ports:
-        - "${SERVER_PORT:-8087}:${SERVER_PORT:-8087}"
+        - "8087:8087"
       environment:
-        DATABASE_URL: jdbc:mysql://mysql:3306/mydatabase?createDatabaseIfNotExist=true
-        DATABASE_USERNAME: springuser
-        DATABASE_PASSWORD: springpass
+        SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/mydatabase?createDatabaseIfNotExist=true
+        SPRING_DATASOURCE_USERNAME: springuser
+        SPRING_DATASOURCE_PASSWORD: springpass
 
         # Monitoring metrics configuration
         MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: "prometheus,health,info"
