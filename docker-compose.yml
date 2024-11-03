@@ -1,35 +1,50 @@
 version: '3.8'
-
 services:
   mysql:
     image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: devops
+      MYSQL_ROOT_HOST: '%'
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     ports:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
       - backend-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   backend:
     build:
       context: .
       dockerfile: Dockerfile
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/devops?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/devops?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
     ports:
       - "8089:8089"
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
     networks:
       - backend-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8089/tpfoyer/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   mysql_data:
 
 networks:
   backend-network:
+    driver: bridge

@@ -1,5 +1,7 @@
 FROM openjdk:17-jdk-alpine
 WORKDIR /app
-COPY target/tp-foyer-5.0.0.jar /app/tp-foyer-5.0.0.jar
+COPY target/*.jar /app/app.jar
 EXPOSE 8089
-ENTRYPOINT ["java", "-jar", "/app/tp-foyer-5.0.0.jar"]
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+
+
