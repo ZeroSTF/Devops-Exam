@@ -1,0 +1,87 @@
+# deployment.yaml
+
+# MySQL Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: mysql
+          image: mysql:8.0
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: "rootpass"
+            - name: MYSQL_DATABASE
+              value: "mydatabase"
+            - name: MYSQL_USER
+              value: "springuser"
+            - name: MYSQL_PASSWORD
+              value: "springpass"
+          ports:
+            - containerPort: 3306
+
+---
+# MySQL Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+spec:
+  ports:
+    - port: 3306
+      targetPort: 3306
+  selector:
+    app: mysql
+
+---
+# Spring Boot Application Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring-app
+  template:
+    metadata:
+      labels:
+        app: spring-app
+    spec:
+      containers:
+        - name: spring-app
+          image: amineezzaouia07/amineezzaouia_5infini2:latest
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:mysql://mysql:3306/mydatabase?createDatabaseIfNotExist=true"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "springuser"
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: "springpass"
+          ports:
+            - containerPort: 8087
+
+---
+# Spring Boot Application Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: spring-app
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 8087
+      targetPort: 8087
+  selector:
+    app: spring-app
