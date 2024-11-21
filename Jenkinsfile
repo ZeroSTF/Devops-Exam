@@ -1,5 +1,9 @@
 pipeline {
     agent any
+	
+	tools {
+        nodejs "Node18"
+    }
     
     environment {
         GITHUB_REPO = 'https://github.com/ZeroSTF/Devops-Exam.git'
