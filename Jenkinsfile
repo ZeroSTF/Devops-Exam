@@ -11,7 +11,7 @@ pipeline {
     }
     
     triggers {
-	//testing it now
+	//testing it now again
         githubPush()
     }
     
