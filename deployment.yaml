@@ -1,4 +1,24 @@
-# deployment.yaml
+# Service Account for MySQL
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: mysql-sa
+
+---
+
+# PersistentVolumeClaim for MySQL Storage
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-data-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+---
 
 # MySQL Deployment
 apiVersion: apps/v1
@@ -15,9 +35,11 @@ spec:
       labels:
         app: mysql
     spec:
+      serviceAccountName: mysql-sa
+      automountServiceAccountToken: false
       containers:
         - name: mysql
-          image: mysql:8.0
+          image: mysql:8.0.30
           env:
             - name: MYSQL_ROOT_PASSWORD
               value: "rootpass"
@@ -29,8 +51,25 @@ spec:
               value: "springpass"
           ports:
             - containerPort: 3306
+          volumeMounts:
+            - name: mysql-data
+              mountPath: /var/lib/mysql
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "500m"
+              ephemeral-storage: "1Gi"
+            limits:
+              memory: "1Gi"
+              cpu: "1"
+              ephemeral-storage: "2Gi"
+      volumes:
+        - name: mysql-data
+          persistentVolumeClaim:
+            claimName: mysql-data-pvc
 
 ---
+
 # MySQL Service
 apiVersion: v1
 kind: Service
@@ -44,6 +83,15 @@ spec:
     app: mysql
 
 ---
+
+# Service Account for Spring App
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: spring-app-sa
+
+---
+
 # Spring Boot Application Deployment
 apiVersion: apps/v1
 kind: Deployment
@@ -59,9 +107,11 @@ spec:
       labels:
         app: spring-app
     spec:
+      serviceAccountName: spring-app-sa
+      automountServiceAccountToken: false
       containers:
         - name: spring-app
-          image: amineezzaouia07/amineezzaouia_5infini2:latest
+          image: amineezzaouia07/amineezzaouia_5infini2:v1.0
           env:
             - name: SPRING_DATASOURCE_URL
               value: "jdbc:mysql://mysql:3306/mydatabase?createDatabaseIfNotExist=true"
@@ -71,8 +121,18 @@ spec:
               value: "springpass"
           ports:
             - containerPort: 8087
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+              ephemeral-storage: "500Mi"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+              ephemeral-storage: "1Gi"
 
 ---
+
 # Spring Boot Application Service
 apiVersion: v1
 kind: Service
