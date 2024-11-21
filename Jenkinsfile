@@ -10,11 +10,6 @@ pipeline {
         DOCKER_CREDENTIALS = credentials('docker-hub-credentials')
     }
     
-    triggers {
-	//testing it now again
-        githubPush()
-    }
-    
     stages {
         stage('Git') {
             steps {
