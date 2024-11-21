@@ -1,0 +1,46 @@
+<div class="container">
+  <div class="header">
+    <h1>Student Management</h1>
+    <button class="add-button" routerLink="/students/new">Add New Student</button>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    Loading students...
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+
+  <div class="table-container" *ngIf="!loading && !error">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>CIN</th>
+          <th>Birth Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let student of students">
+          <td>{{student.idEtudiant}}</td>
+          <td>{{student.prenomEtudiant}}</td>
+          <td>{{student.nomEtudiant}}</td>
+          <td>{{student.cinEtudiant}}</td>
+          <td>{{student.dateNaissance | date:'mediumDate'}}</td>
+          <td class="actions">
+            <button class="edit-btn" [routerLink]="['/students/edit', student.idEtudiant]">
+              Edit
+            </button>
+            <button class="delete-btn" (click)="deleteStudent(student.idEtudiant!)">
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
