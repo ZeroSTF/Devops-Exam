@@ -93,7 +93,7 @@ pipeline {
             }
         }
         
-        stage('Docker Hub') {
+        /*stage('Docker Hub') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', 
                                                   usernameVariable: 'DOCKER_USER', 
@@ -104,7 +104,7 @@ pipeline {
                     '''
                 }
             }
-        }
+        }*/
         
         stage('Docker Compose') {
             steps {
