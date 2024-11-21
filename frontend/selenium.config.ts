@@ -1,13 +1,26 @@
 export const config = {
-  selenium: {
-    hub: 'http://selenium-hub:4444/wd/hub',
-    capabilities: {
-      browserName: 'chrome',
-      'goog:chromeOptions': {
-        args: ['--headless', '--no-sandbox', '--disable-dev-shm-usage'],
-      },
+  seleniumAddress: 'http://localhost:4444/wd/hub',
+  baseUrl: 'http://localhost:80',
+  capabilities: {
+    browserName: 'chrome',
+    chromeOptions: {
+      args: ['--headless', '--no-sandbox', '--disable-dev-shm-usage'],
     },
   },
-  baseUrl: 'http://frontend',
-  waitTimeout: 10000,
+  framework: 'mocha',
+  specs: ['e2e-tests/**/*.ts'],
+  mochaOpts: {
+    reporter: 'spec',
+    timeout: 30000,
+  },
 };
+
+// "@types/jasmine": "latest",
+// "@types/selenium-webdriver": "^4.1.20",
+// "selenium-webdriver": "^4.18.1",
+// "chromedriver": "latest",
+// "geckodriver": "latest",
+// "mocha": "^10.2.0",
+// "ts-mocha": "^10.0.0",
+// "@types/mocha": "^10.0.1",
+// "mocha-junit-reporter": "^2.2.0",
