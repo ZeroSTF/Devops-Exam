@@ -95,15 +95,18 @@
                         </goals>
                         <configuration>
                             <outputDirectory>${project.build.directory}/site/jacoco</outputDirectory>
-                            <reportFormats>
-                                <reportFormat>HTML</reportFormat>
-                                <reportFormat>XML</reportFormat>
-                                <reportFormat>JSON</reportFormat> <!-- Ensure JSON is included -->
-                            </reportFormats>
+                            <formats>
+                                <format>HTML</format>
+                                <format>XML</format>
+                                <format>CSV</format>
+                            </formats>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+
+
+
 
 
 
