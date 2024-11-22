@@ -31,6 +31,7 @@
     "@types/chai": "^5.0.1",
     "@types/jasmine": "~5.1.0",
     "@types/mocha": "^10.0.10",
+    "@types/node": "^22.9.1",
     "@types/selenium-webdriver": "^4.1.27",
     "chai": "^5.1.2",
     "chromedriver": "^131.0.1",
@@ -42,9 +43,12 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "mocha": "^10.8.2",
-    "mocha-junit-reporter": "^2.2.0",
+    "mocha-junit-reporter": "^2.2.1",
+    "mocha-typescript": "^1.1.17",
     "selenium-webdriver": "^4.26.0",
+    "ts-mocha": "^10.0.0",
     "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "~5.5.2"
   }
 }

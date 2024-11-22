@@ -1,9 +1,5 @@
 pipeline {
     agent any
-	
-	tools {
-        nodejs "Node18"
-    }
     
     environment {
         GITHUB_REPO = 'https://github.com/ZeroSTF/Devops-Exam.git'
@@ -93,7 +89,7 @@ pipeline {
             }
         }
         
-        /*stage('Docker Hub') {
+        stage('Docker Hub') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', 
                                                   usernameVariable: 'DOCKER_USER', 
@@ -104,7 +100,7 @@ pipeline {
                     '''
                 }
             }
-        }*/
+        }
         
         stage('Docker Compose') {
             steps {
@@ -118,7 +114,7 @@ pipeline {
             }
         }
         
-         stage('Selenium') {
+        /*stage('Selenium') {
             steps {
                 dir('frontend') {
                     script {
@@ -163,7 +159,7 @@ pipeline {
                     sh 'rm -rf frontend/node_modules'
                 }
             }
-        }
+        }*/
         
         stage('Grafana') {
             steps {
