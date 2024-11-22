@@ -154,7 +154,7 @@ pipeline {
             }
             post {
                 always {
-                    archiveArtifacts artifacts: 'frontend/e2e-test-results/**/*', allowEmptyArchive: true
+                    archiveArtifacts artifacts: 'frontend/e2e-test-results/**', allowEmptyArchive: true
                     // Clean up node_modules to save space
                     sh 'rm -rf frontend/node_modules'
                 }
