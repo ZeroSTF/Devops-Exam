@@ -112,6 +112,7 @@ spec:
       containers:
         - name: spring-app
           image: amineezzaouia07/amineezzaouia_5infini2:v1.0
+          imagePullPolicy: IfNotPresent
           env:
             - name: SPRING_DATASOURCE_URL
               value: "jdbc:mysql://mysql:3306/mydatabase?createDatabaseIfNotExist=true"
