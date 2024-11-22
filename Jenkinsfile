@@ -118,29 +118,52 @@ pipeline {
             }
         }
         
-        stage('Selenium') {
-			steps {
-				dir('frontend') {
-					script {
-						try {
-							sh '''
-								npm install
-								mkdir -p e2e-test-results
-								npm run e2e || true
-							'''
-						} catch (Exception e) {
-							echo "Selenium tests failed: ${e.message}"
-							currentBuild.result = 'UNSTABLE'
-						}
-					}
-				}
-			}
-			post {
-				always {
-					archiveArtifacts artifacts: 'frontend/e2e-test-results/**/*', allowEmptyArchive: true
-				}
-			}
-		}
+         stage('Selenium') {
+            steps {
+                dir('frontend') {
+                    script {
+                        try {
+                            // Fix permissions for Jenkins workspace
+                            sh 'chmod -R 777 .'
+                            
+                            // Clear npm cache and remove node_modules
+                            sh '''
+                                npm cache clean --force
+                                rm -rf node_modules package-lock.json
+                            '''
+                            
+                            // Install dependencies with legacy peer deps flag
+                            sh '''
+                                npm install --legacy-peer-deps
+                                mkdir -p e2e-test-results
+                            '''
+                            
+                            // Increase maximum heap size for Node
+                            sh '''
+                                export NODE_OPTIONS="--max-old-space-size=4096"
+                                npm run e2e || true
+                            '''
+                        } catch (Exception e) {
+                            echo "Selenium tests failed: ${e.message}"
+                            currentBuild.result = 'UNSTABLE'
+                            
+                            // Archive any error logs
+                            sh '''
+                                mkdir -p e2e-test-results/errors
+                                cp -r npm-debug.log* e2e-test-results/errors/ || true
+                            '''
+                        }
+                    }
+                }
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: 'frontend/e2e-test-results/**/*', allowEmptyArchive: true
+                    // Clean up node_modules to save space
+                    sh 'rm -rf frontend/node_modules'
+                }
+            }
+        }
         
         stage('Grafana') {
             steps {
