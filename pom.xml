@@ -98,12 +98,14 @@
                             <reportFormats>
                                 <reportFormat>HTML</reportFormat>
                                 <reportFormat>XML</reportFormat>
-                                <reportFormat>JSON</reportFormat>
+                                <reportFormat>JSON</reportFormat> <!-- Ensure JSON is included -->
                             </reportFormats>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+
+
 
 
             <plugin>
