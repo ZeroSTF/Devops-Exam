@@ -80,7 +80,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.7</version> <!-- Updated to support Java 17 -->
+                <version>0.8.10</version>
                 <executions>
                     <execution>
                         <goals>
@@ -93,9 +93,19 @@
                         <goals>
                             <goal>report</goal>
                         </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/site/jacoco</outputDirectory>
+                            <reportFormats>
+                                <reportFormat>HTML</reportFormat>
+                                <reportFormat>XML</reportFormat>
+                                <reportFormat>JSON</reportFormat>
+                            </reportFormats>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
+
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
