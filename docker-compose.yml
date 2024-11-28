@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  app:
+    image: aymen/tp-foyer:1.0.0
+    container_name: tp-foyer-app
+    ports:
+      - "8087:8089"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/db
+      SPRING_DATASOURCE_USERNAME: aymen
+      SPRING_DATASOURCE_PASSWORD: aymen
+      SPRING_MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: "*"
+      SPRING_MANAGEMENT_ENDPOINTS_WEB_BASE_PATH: /actuator
+      SPRING_MANAGEMENT_ENDPOINT_HEALTH_SHOWDETAILS: always
+    depends_on:
+      - postgres
+    networks:
+      - spring-demo
+
+  postgres:
+    container_name: postgres-db
+    image: postgres
+    environment:
+      POSTGRES_USER: aymen
+      POSTGRES_PASSWORD: aymen
+      PGDATA: /var/lib/postgresql/data
+      POSTGRES_DB: db
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - '5433:5432'
+    networks:
+      - spring-demo
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - '9090:9090'
+    networks:
+      - spring-demo
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - '3000:3000'
+    volumes:
+      - grafana-data:/var/lib/grafana
+    networks:
+      - spring-demo
+
+networks:
+  spring-demo:
+    driver: bridge
+
+volumes:
+  postgres:
+    driver: local
+  grafana-data:
+    driver: local
